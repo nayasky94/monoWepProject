@@ -20,7 +20,7 @@
   	float:right;
   	font-size:15px;
   }
-  #loginBtn, #joinBtn{
+  #loginBtn, #joinBtn, #myBtn{
   	display:inline-block;
   	margin-left:20px;
   	cursor:pointer;
@@ -124,6 +124,9 @@
   function faqPage(){
 	  location.href="/mono/views/faq/faq.jsp";
   }
+  function myPage(){
+	  location.href="/mono/views/mypage/mypage.jsp";
+  }
   </script>
 </head>
 <body>
@@ -134,6 +137,7 @@
 		<div class="loginArea">
 			<div id="loginBtn" onclick="loginPage();">LOGIN</div>
 			<div id="joinBtn" onclick="joinPage();">JOIN</div>
+			<div id="myBtn" onclick="myPage();">마이페이지</div>
 		</div>
 		<br>
 		<div class="menuList" >

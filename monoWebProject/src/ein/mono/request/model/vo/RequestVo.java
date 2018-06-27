@@ -15,7 +15,7 @@ public class RequestVo { // 신청 공통 사항
 	private List<String> samplePhotoUrls; // 희망하는 시공 사진(2매까지)
 	private int reqPrice; // 경매희망가
 	private Date reqDate; // 시공희망일
-	private Date startDate; // 신청한 날짜. 경매는 끝나는 날짜도 있다.
+	private Date startDate; // 신청한 날짜.
 	private String reqCheck; // 주문 상태를 표시(경매중 등등)
 	private String tradeCheck; // 거래 상태를 표시(선불 등)
 	private int size; // 평수
@@ -26,6 +26,7 @@ public class RequestVo { // 신청 공통 사항
 	private String coating; // 도장재
 	private List<String> innerConst; // 내부 시공 항목 체크사항들(천장, 중문, 창호, 타일, 욕실, 주방, 기타-입주 청소)
 	private String reqType; // 주문 분류
+
 	
 	public String getReqCode() {
 		return reqCode;
