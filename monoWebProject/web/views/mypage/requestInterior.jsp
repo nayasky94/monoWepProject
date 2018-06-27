@@ -42,7 +42,7 @@
 					<td>i+1 </td>
 					<td><%=list.get(i).getStartDate() %></td>
 					<td><%=list.get(i).getReqType() %></td>
-					<td><%=list.get(i).getReqTitle()%></td>
+					<td><a href="#"><%=list.get(i).getReqTitle()%></a></td>
 					<td><%=list.get(i).getSize() %></td>
 					<td><%=list.get(i).getReqCheck() %></td>				
 				</tr>
