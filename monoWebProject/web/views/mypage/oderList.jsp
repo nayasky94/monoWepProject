@@ -17,7 +17,7 @@
 		height:100px;
 	}
 	.outer{
-			width:800px;
+			width:500px;
 			height:500px;
 			margin-left:auto;
 			margin-right:auto;
@@ -32,7 +32,7 @@
 	</div>
 	<div class="outer">
 		<h3>내가 쓴글</h3>
-		<table>
+		<table align="center">
 			<tr>
 				<th>no</th><th>작성일</th><th>견적명</th><th>평형</th><th>작성자</th>
 			</tr>
