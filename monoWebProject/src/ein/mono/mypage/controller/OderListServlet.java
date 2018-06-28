@@ -10,20 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ein.mono.board.model.vo.PostVo;
 import ein.mono.mypage.model.service.MypageService;
+import ein.mono.request.model.vo.RequestVo;
 
 /**
- * Servlet implementation class PostListServlet
+ * Servlet implementation class OderListServlet
  */
-@WebServlet("/postList.do")
-public class PostListServlet extends HttpServlet {
+@WebServlet("/oderList.do")
+public class OderListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public PostListServlet() {
+    public OderListServlet() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -33,19 +34,16 @@ public class PostListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mCode = request.getParameter("mCode");
 		
-		ArrayList<PostVo> list = new MypageService().getPostList("AAA");
+		ArrayList<RequestVo> list = new MypageService().getOderList("P_2");
 		
 		RequestDispatcher view = null;
 		if(0 != list.size()){
 			request.setAttribute("list", list);
-			view = request.getRequestDispatcher("views/mypage/myBoard.jsp");
+			view = request.getRequestDispatcher("views/mypage/oderList.jsp");
 		}else{
 			System.out.println("error");
 		}
 		view.forward(request, response);
-		
-		
 	}
-
 
 }

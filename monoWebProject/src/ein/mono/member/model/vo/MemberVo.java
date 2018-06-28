@@ -6,7 +6,6 @@ public class MemberVo {
 	//member 공통적으로 가지고 있는 값 기본정보 //멤버생일 제외함
 	
 	private String memberCode;
-	private String memberType;
 	private String memberRank;
 	private String memberId;
 	private String memberPwd;
@@ -20,12 +19,11 @@ public class MemberVo {
 	public MemberVo() {}
 	
 	//전체
-	public MemberVo(String memberCode, String memberType, String memberRank, String memberId, String memberPwd,
+	public MemberVo(String memberCode, String memberRank, String memberId, String memberPwd,
 			String memberName, String memberEmail, String memberAddress, String memberTel, String memberNickname,
 			Date memberJoinDate) {
 		super();
 		this.memberCode = memberCode;
-		this.memberType = memberType;
 		this.memberRank = memberRank;
 		this.memberId = memberId;
 		this.memberPwd = memberPwd;
@@ -42,7 +40,6 @@ public class MemberVo {
 	public MemberVo(String memberType, String memberId, String memberPwd, String memberName, String memberEmail,
 			String memberAddress, String memberTel, String memberNickname) {
 		super();
-		this.memberType = memberType;
 		this.memberId = memberId;
 		this.memberPwd = memberPwd;
 		this.memberName = memberName;
@@ -58,14 +55,6 @@ public class MemberVo {
 
 	public void setMemberCode(String memberCode) {
 		this.memberCode = memberCode;
-	}
-
-	public String getMemberType() {
-		return memberType;
-	}
-
-	public void setMemberType(String memberType) {
-		this.memberType = memberType;
 	}
 
 	public String getMemberRank() {
@@ -142,7 +131,7 @@ public class MemberVo {
 
 	@Override
 	public String toString() {
-		return "MemberVo [memberCode=" + memberCode + ", memberType=" + memberType + ", memberRank=" + memberRank
+		return "MemberVo [memberCode=" + memberCode + ", memberRank=" + memberRank
 				+ ", memberId=" + memberId + ", memberPwd=" + memberPwd + ", memberName=" + memberName
 				+ ", memberEmail=" + memberEmail + ", memberAddress=" + memberAddress + ", memberTel=" + memberTel
 				+ ", memberNickname=" + memberNickname + ", memberJoinDate=" + memberJoinDate + "]";

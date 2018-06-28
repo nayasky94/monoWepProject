@@ -1,8 +1,12 @@
+<%@page import="ein.mono.member.model.vo.MemberVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
+<%
+	MemberVo member = (MemberVo)session.getAttribute("user");
+%>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href='http://fonts.googleapis.com/css?family=Raleway:600' rel='stylesheet' type='text/css'>
@@ -140,28 +144,34 @@ ul.sonarmenu a:hover:before, ul.sonarmenu a:hover:after{
 <br/>
 <br/>
 <ul class="sonarmenu">
-<hr/>
-<li><b> <font size=6>   마이페이지</font> </b> </li>
-<hr/>
-<br/>
-<br/>
-<center>
-<li><a class="menu01" href="/mono/views/member/memberUpdate.jsp">내 정보 수정</a></li>
-<li><a href="/mono/views/mypage/requestInterior.jsp">인테리어 신청 내역</a></li>
-<li><a href="/mono/views/mypage/FaveList.jsp">즐겨찾기 목록</a></li>
-<li><a href="/mono/views/mypage/blockList.jsp">차단 목록</a></li>
-<li><a href="/mono/views/mypage/myBoard.jsp">내가 쓴글</a></li>
-</center>
+			<hr />
+			<li><b> <font size=6> 마이페이지</font>
+			</b></li>
+			<hr />
+			<br />
+			<br />
+			<!-- <%//if(member.getMemberCode().charAt(0) == 'B'){ %>
+				<center>
+					<li><a class="menu01" href="/mono/views/member/memberUpdate.jsp">내 정보 수정</a></li>
+					<li><a href="/mono/views/mypage/requestInterior.jsp">인테리어	신청 내역</a></li>
+					<li><a href="/mono/views/mypage/FaveList.jsp">즐겨찾기 목록</a></li>
+					<li><a href="/mono/views/mypage/blockList.jsp">차단 목록</a></li>
+					<li><a href="/mono/postList.do">내가 쓴글</a></li>
+				</center>
+			<%//}else{ %> -->
+				<center>
+					<li><a class="menu01" href="/mono/views/member/memberUpdate.jsp">업체 정보 수정</a></li>
+					<li><a href="/mono/oderList.do">주문 확인</a></li>
+					<li><a href="/mono/views/mypage/FaveList.jsp">업체 시공 사례</a></li>
+					<li><a href="/mono/views/mypage/blockList.jsp">QnA</a></li>
+				</center>
+			<%//} %> 
 
 
-<br/>
-<br/>
 
-<br/>
+			<hr />
 
-<hr/>
-
-</ul>
+		</ul>
 
 
 

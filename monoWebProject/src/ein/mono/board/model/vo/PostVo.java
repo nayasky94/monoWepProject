@@ -25,6 +25,13 @@ public class PostVo {
 		this.content = content;
 	}
 
+	public PostVo(String title, int views_count, Date written_date) {
+		super();
+		this.title = title;
+		this.views_count = views_count;
+		this.written_date = written_date;
+	}
+
 	public String getPost_code() {
 		return post_code;
 	}
@@ -88,6 +95,8 @@ public class PostVo {
 	public void setDel_flag(String del_flag) {
 		this.del_flag = del_flag;
 	}
+
+	
 
 	
 	
