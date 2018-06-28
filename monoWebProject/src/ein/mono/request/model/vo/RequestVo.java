@@ -27,7 +27,6 @@ public class RequestVo { // 신청 공통 사항
 	private List<String> innerConst; // 내부 시공 항목 체크사항들(천장, 중문, 창호, 타일, 욕실, 주방, 기타-입주 청소)
 	private String reqType; // 주문 분류
 	private String nName;
-	private int acreage;
 
 	
 	public String getnName() {
@@ -36,14 +35,6 @@ public class RequestVo { // 신청 공통 사항
 
 	public void setnName(String nName) {
 		this.nName = nName;
-	}
-
-	public int getAcreage() {
-		return acreage;
-	}
-
-	public void setAcreage(int acreage) {
-		this.acreage = acreage;
 	}
 
 	public String getReqCode() {

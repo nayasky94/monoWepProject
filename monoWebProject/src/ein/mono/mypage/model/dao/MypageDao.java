@@ -93,7 +93,7 @@ public class MypageDao {
 				temp.setConstAddress(cAddress);
 				temp.setStartDate(aDate);
 				temp.setnName(nName);
-				temp.setAcreage(acreage);
+				temp.setSize(acreage);
 				
 				list.add(temp);
 			}
