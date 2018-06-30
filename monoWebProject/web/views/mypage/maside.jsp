@@ -150,7 +150,7 @@ ul.sonarmenu a:hover:before, ul.sonarmenu a:hover:after{
 			<hr />
 			<br />
 			<br />
-			<!-- <%//if(member.getMemberCode().charAt(0) == 'B'){ %>
+			 <%//if(member.getMemberCode().charAt(0) == 'B'){ %>
 				<center>
 					<li><a class="menu01" href="/mono/views/member/memberUpdate.jsp">내 정보 수정</a></li>
 					<li><a href="/mono/views/mypage/requestInterior.jsp">인테리어	신청 내역</a></li>
@@ -158,7 +158,7 @@ ul.sonarmenu a:hover:before, ul.sonarmenu a:hover:after{
 					<li><a href="/mono/views/mypage/blockList.jsp">차단 목록</a></li>
 					<li><a href="/mono/postList.do">내가 쓴글</a></li>
 				</center>
-			<%//}else{ %> -->
+			<%//}else{ %>
 				<center>
 					<li><a class="menu01" href="/mono/views/member/memberUpdate.jsp">업체 정보 수정</a></li>
 					<li><a href="/mono/oderList.do">주문 확인</a></li>
