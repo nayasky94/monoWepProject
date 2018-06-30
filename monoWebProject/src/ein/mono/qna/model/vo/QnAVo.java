@@ -6,7 +6,9 @@ public class QnAVo {
 	private String pCode;
 	private String question;
 	private String answer;
+	private String nName;
 	
+
 	public QnAVo(){}
 
 	public QnAVo(String qnaCode, String mCode, String pCode, String question, String answer) {
@@ -57,8 +59,12 @@ public class QnAVo {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-
+	public String getnName() {
+		return nName;
+	}
 	
-	
+	public void setnName(String nName) {
+		this.nName = nName;
+	}
 
 }

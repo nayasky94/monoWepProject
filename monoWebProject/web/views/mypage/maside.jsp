@@ -162,12 +162,10 @@ ul.sonarmenu a:hover:before, ul.sonarmenu a:hover:after{
 				<center>
 					<li><a class="menu01" href="/mono/views/member/memberUpdate.jsp">업체 정보 수정</a></li>
 					<li><a href="/mono/oderList.do">주문 확인</a></li>
-					<li><a href="/mono/views/mypage/FaveList.jsp">업체 시공 사례</a></li>
-					<li><a href="/mono/views/mypage/blockList.jsp">QnA</a></li>
+					<li><a href="/mono/views/mypage/">업체 시공 사례</a></li>
+					<li><a href="/mono/qnaList.do">QnA</a></li>
 				</center>
 			<%//} %> 
-
-
 
 			<hr />
 

@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import ein.mono.board.model.vo.PostVo;
 import ein.mono.common.JDBCTemplate;
+import ein.mono.qna.model.vo.QnAVo;
 import ein.mono.report.model.vo.ReportVo;
 import ein.mono.request.model.vo.RequestVo;
 
@@ -66,8 +67,34 @@ public class MypageDao {
 	public ArrayList selectConstList(Connection con,String pCode){
 		return null;
 	}
-	public ArrayList selectQnaList(Connection con,String pCode){
-		return null;
+	public ArrayList<QnAVo> selectQnaList(Connection con,String mCode){
+		ArrayList<QnAVo> list = new ArrayList<QnAVo>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+		
+		query = prop.getProperty("selectQnaList");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, mCode);
+			rs = pstmt.executeQuery();
+			QnAVo temp = null;
+			while(rs.next()){
+				temp = new QnAVo();
+				temp.setQnaCode(rs.getString("qna_code"));
+				temp.setQuestion(rs.getString("question"));
+				temp.setnName(rs.getString("member_nname"));
+				
+				list.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
 	}
 
 	public ArrayList<RequestVo> selectOderList(Connection con, String mCode) {
@@ -102,8 +129,7 @@ public class MypageDao {
 		}finally{
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
-		}
-		
+		}	
 		
 		return list;
 	}

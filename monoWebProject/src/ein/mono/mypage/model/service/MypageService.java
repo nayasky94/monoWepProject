@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import ein.mono.board.model.vo.PostVo;
 import ein.mono.common.JDBCTemplate;
 import ein.mono.mypage.model.dao.MypageDao;
+import ein.mono.qna.model.dao.QnADao;
+import ein.mono.qna.model.vo.QnAVo;
 import ein.mono.report.model.vo.ReportVo;
 import ein.mono.request.model.vo.RequestVo;
 
@@ -28,12 +30,16 @@ public class MypageService {
 	public ArrayList getConstList(String pCode){
 		return null;
 	}
-	public ArrayList getQnaList(String pCode){
-		return null;
+	public ArrayList<QnAVo> getQnaList(String mCode){
+		Connection con = JDBCTemplate.getConnection();
+		ArrayList<QnAVo> list = new MypageDao().selectQnaList(con,mCode);
+		JDBCTemplate.close(con);
+		return list;
 	}
 	public ArrayList<RequestVo> getOderList(String mCode) {
 		Connection con = JDBCTemplate.getConnection();
 		ArrayList<RequestVo> list = new MypageDao().selectOderList(con,mCode);
+		JDBCTemplate.close(con);
 		return list;
 	}
 }
