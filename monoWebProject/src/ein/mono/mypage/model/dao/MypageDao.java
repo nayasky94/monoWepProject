@@ -77,13 +77,20 @@ public class MypageDao {
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, mCode);
+			
 			rs = pstmt.executeQuery();
 			QnAVo temp = null;
 			while(rs.next()){
+				String qCode = rs.getString("qna_code");
+				String question = rs.getString("question");
+				String answer = rs.getString("answer");
+				String nName = rs.getString("member_nname");
+				
 				temp = new QnAVo();
-				temp.setQnaCode(rs.getString("qna_code"));
-				temp.setQuestion(rs.getString("question"));
-				temp.setnName(rs.getString("member_nname"));
+				temp.setQnaCode(qCode);
+				temp.setQuestion(question);
+				temp.setAnswer(answer);
+				temp.setnName(nName);
 				
 				list.add(temp);
 			}
