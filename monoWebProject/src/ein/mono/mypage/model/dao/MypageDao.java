@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import ein.mono.board.model.vo.PostVo;
 import ein.mono.common.JDBCTemplate;
+import ein.mono.profil.model.vo.ProfileVo;
 import ein.mono.qna.model.vo.QnAVo;
 import ein.mono.report.model.vo.ReportVo;
 import ein.mono.request.model.vo.RequestVo;
@@ -64,9 +65,7 @@ public class MypageDao {
 		
 		return result;
 	}
-	public ArrayList selectConstList(Connection con,String pCode){
-		return null;
-	}
+	
 	public ArrayList<PostVo> selectQnaList(Connection con,String mCode){
 		ArrayList<PostVo> list = new ArrayList<PostVo>();
 		PreparedStatement pstmt = null;
@@ -141,5 +140,14 @@ public class MypageDao {
 		}	
 		
 		return list;
+	}
+
+	public int insertPhoto(Connection con) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "";
+		
+		query = prop.getProperty("insertPhoto");
+		return 0;
 	}
 }

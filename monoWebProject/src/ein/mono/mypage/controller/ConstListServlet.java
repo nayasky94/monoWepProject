@@ -1,11 +1,18 @@
 package ein.mono.mypage.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import ein.mono.mypage.model.service.MypageService;
+import ein.mono.profil.model.vo.ProfileVo;
 
 /**
  * Servlet implementation class ConstListServlet
@@ -21,20 +28,19 @@ public class ConstListServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String mCode = request.getParameter("member_code");
+		
+		HashMap<Integer, String> list = new MypageService().getConstList("P_2");
+		
+		RequestDispatcher view = null;
+		if(null != list){
+			request.setAttribute("list", list);
+			view = request.getRequestDispatcher("views/mypage/constPhotoList.jsp");
+		}else{
+			System.out.println("error");
+		}
+		view.forward(request, response);
 	}
 
 }
