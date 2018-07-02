@@ -26,11 +26,6 @@
 		height:100px;
 	}
 </style>
-<script>
-	function upload(){
-		location.href = "/mono/photoInsert.do?lastNum=<%=list.size()-1%>";
-	}
-</script>
 </head>
 <body>
 <%@include file="/views/common/header.jsp" %>
@@ -43,8 +38,10 @@
 				<img class="imgFile" src = "/mono/upload/const_photo/<%=list.get(i)%>" >
 			</div>		
 		<%} %>
-		
-		<input type="button" value="사진 업로드" onclick="upload();">
+		<form action="/mono/photoInsert.do?lastNum=<%=list.size()-1%>" method="post" enctype="Multipart.form-data">
+			<input type="file" name="fileName">
+			<input type="submit" value="사진 업로드">
+		</form>
 	</div>
 </body>
 </html>
