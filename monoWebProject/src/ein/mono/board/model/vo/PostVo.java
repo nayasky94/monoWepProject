@@ -11,8 +11,11 @@ public class PostVo {
 	private int views_count;
 	private Date written_date;
 	private String del_flag;
+	private String nName;
+	private String ptn_name;
 //	private String file; // 첨부파일 여러개 할거야
 	
+
 	public PostVo() {
 		super();
 	}
@@ -94,6 +97,21 @@ public class PostVo {
 
 	public void setDel_flag(String del_flag) {
 		this.del_flag = del_flag;
+	}
+	public String getnName() {
+		return nName;
+	}
+	
+	public void setnName(String nName) {
+		this.nName = nName;
+	}
+	
+	public String getPtn_name() {
+		return ptn_name;
+	}
+	
+	public void setPtn_name(String ptn_name) {
+		this.ptn_name = ptn_name;
 	}
 
 	

@@ -30,9 +30,9 @@ public class MypageService {
 	public ArrayList getConstList(String pCode){
 		return null;
 	}
-	public ArrayList<QnAVo> getQnaList(String mCode){
+	public ArrayList<PostVo> getQnaList(String mCode){
 		Connection con = JDBCTemplate.getConnection();
-		ArrayList<QnAVo> list = new MypageDao().selectQnaList(con,mCode);
+		ArrayList<PostVo> list = new MypageDao().selectQnaList(con,mCode);
 		JDBCTemplate.close(con);
 		return list;
 	}

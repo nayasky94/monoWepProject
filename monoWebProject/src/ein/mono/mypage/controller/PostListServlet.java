@@ -33,7 +33,7 @@ public class PostListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mCode = request.getParameter("mCode");
 		
-		ArrayList<PostVo> list = new MypageService().getPostList("AAA");
+		ArrayList<PostVo> list = new MypageService().getPostList("M_1");
 		
 		RequestDispatcher view = null;
 		if(0 != list.size()){

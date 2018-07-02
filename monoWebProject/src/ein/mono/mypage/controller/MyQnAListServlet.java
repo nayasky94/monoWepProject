@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ein.mono.board.model.vo.PostVo;
 import ein.mono.mypage.model.service.MypageService;
 import ein.mono.qna.model.vo.QnAVo;
 
@@ -34,7 +35,7 @@ public class MyQnAListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mCode = request.getParameter("member_code");
 		
-		ArrayList<QnAVo> list = new MypageService().getQnaList("P_2");
+		ArrayList<PostVo> list = new MypageService().getQnaList("P_2");
 		
 
 		RequestDispatcher view = null;

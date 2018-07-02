@@ -67,8 +67,8 @@ public class MypageDao {
 	public ArrayList selectConstList(Connection con,String pCode){
 		return null;
 	}
-	public ArrayList<QnAVo> selectQnaList(Connection con,String mCode){
-		ArrayList<QnAVo> list = new ArrayList<QnAVo>();
+	public ArrayList<PostVo> selectQnaList(Connection con,String mCode){
+		ArrayList<PostVo> list = new ArrayList<PostVo>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
@@ -79,18 +79,20 @@ public class MypageDao {
 			pstmt.setString(1, mCode);
 			
 			rs = pstmt.executeQuery();
-			QnAVo temp = null;
+			PostVo temp = null;
 			while(rs.next()){
-				String qCode = rs.getString("qna_code");
-				String question = rs.getString("question");
-				String answer = rs.getString("answer");
+				String qCode = rs.getString("post_code");
+				String title = rs.getString("title");
 				String nName = rs.getString("member_nname");
+				int vCount = rs.getInt("views_count");
+				Date wDate = rs.getDate("written_date");
 				
-				temp = new QnAVo();
-				temp.setQnaCode(qCode);
-				temp.setQuestion(question);
-				temp.setAnswer(answer);
+				temp = new PostVo();
+				temp.setPost_code(qCode);
+				temp.setTitle(title);
 				temp.setnName(nName);
+				temp.setViews_count(vCount);
+				temp.setWritten_date(wDate);
 				
 				list.add(temp);
 			}

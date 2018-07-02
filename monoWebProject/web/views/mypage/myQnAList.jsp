@@ -1,9 +1,10 @@
+<%@page import="ein.mono.board.model.vo.PostVo"%>
 <%@page import="ein.mono.qna.model.vo.QnAVo"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-	ArrayList<QnAVo> list = (ArrayList<QnAVo>) request.getAttribute("list");
+	ArrayList<PostVo> list = (ArrayList<PostVo>) request.getAttribute("list");
 %>
 <!DOCTYPE html>
 <html>
@@ -37,20 +38,22 @@
 				<th>no</th>
 				<th>질문</th>
 				<th>작성자</th>
-				<th>답변현황</th>
+				<th>작성일</th>
+				<th>조회수</th>
 			</tr>
 			<%if (null != list) {%>
 				<%for (int i = 0; i < list.size(); i++) {%>
 				<tr>
 					<td><%=i + 1%></td>
-					<td><a href="#"><%=list.get(i).getQuestion()%></a></td>
+					<td><a href="/mono/qnaDetail.do?code=<%=list.get(i).getPost_code()%>"><%=list.get(i).getTitle()%></a></td>
 					<td><%=list.get(i).getnName()%></td>
-					<td align = "center"><%=list.get(i).getAnswer() == null ? "O" : "X"%></td>
+					<td><%=list.get(i).getWritten_date() %>
+					<td><%=list.get(i).getViews_count() %></td>
 				</tr>
 				<%}	%>
 			<%} else {%>
 			<tr>
-				<td colspan="4">조회 된 내역이 없습니다.</td>
+				<td colspan="5">조회 된 내역이 없습니다.</td>
 			</tr>
 			<%}%>
 		</table>
