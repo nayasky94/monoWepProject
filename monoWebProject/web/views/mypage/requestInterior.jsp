@@ -40,7 +40,7 @@
 		<%if(null != list){ %>
 			<%for(int i = 0; i<list.size();i++){ %>
 				<tr>
-					<td>i+1 </td>
+					<td><%=i+1 %> </td>
 					<td><%=list.get(i).getStartDate() %></td>
 					<td><%=list.get(i).getReqType() %></td>
 					<td><a href="#"><%=list.get(i).getConstAddress()%></a></td>

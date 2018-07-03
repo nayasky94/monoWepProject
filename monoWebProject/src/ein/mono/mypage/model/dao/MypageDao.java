@@ -215,4 +215,42 @@ public class MypageDao {
 		//6. 결과 리턴	
 		return ptnPhoto;
 	}
+
+	public ArrayList<RequestVo> selectRequestList(Connection con, String mCode) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<RequestVo> list = new ArrayList<RequestVo>();
+		String query = "";
+		
+		query = prop.getProperty("selectRequestList");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, mCode);
+			
+			rs = pstmt.executeQuery();
+			RequestVo temp = null;
+			while(rs.next()){
+				String rCode = rs.getString("req_code");
+				String rType = rs.getString("req_type"); 
+				Date writeDate = rs.getDate("act_startdate");
+				String address = rs.getString("const_address");
+				String nName = rs.getString("member_nname");
+				
+				temp = new RequestVo();
+				temp.setReqCode(rCode);
+				temp.setReqType(rType);
+				temp.setStartDate(writeDate);
+				temp.setConstAddress(address);
+				temp.setnName(nName);
+				
+				list.add(temp);				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
 }

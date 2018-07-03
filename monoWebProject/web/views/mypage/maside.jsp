@@ -152,10 +152,10 @@ ul.sonarmenu a:hover:before, ul.sonarmenu a:hover:after{
 			<br />
 			 <%//if(member.getMemberCode().charAt(0) == 'B'){ %>
 				<center>
-					<li><a class="menu01" href="/mono/views/member/memberUpdate.jsp">내 정보 수정</a></li>
-					<li><a href="/mono/views/mypage/requestInterior.jsp">인테리어	신청 내역</a></li>
-					<li><a href="/mono/views/mypage/FaveList.jsp">즐겨찾기 목록</a></li>
-					<li><a href="/mono/views/mypage/blockList.jsp">차단 목록</a></li>
+					<li><a class="menu01" href="/mono/views/member">내 정보 수정</a></li>
+					<li><a href="/mono/reportDetail.do">인테리어	신청 내역</a></li>
+					<li><a href="/mono/views/mypage/">즐겨찾기 목록</a></li>
+					<li><a href="/mono/views/mypage/">차단 목록</a></li>
 					<li><a href="/mono/postList.do">내가 쓴글</a></li>
 				</center>
 			<%//}else{ %>

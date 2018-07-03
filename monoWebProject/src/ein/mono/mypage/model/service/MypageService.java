@@ -77,4 +77,13 @@ public class MypageService {
 		JDBCTemplate.close(con);
 		return result;
 	}
+	public ArrayList<RequestVo> getRequestList(String mCode) {
+		Connection con = JDBCTemplate.getConnection();
+		
+		ArrayList<RequestVo> list = new MypageDao().selectRequestList(con,mCode);
+		
+		JDBCTemplate.close(con);
+		
+		return list;
+	}
 }
