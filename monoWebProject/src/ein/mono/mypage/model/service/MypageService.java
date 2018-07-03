@@ -2,6 +2,7 @@ package ein.mono.mypage.model.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import ein.mono.board.model.vo.PostVo;
@@ -33,7 +34,7 @@ public class MypageService {
 	public HashMap<Integer, String> getConstList(String mCode){
 		Connection con = JDBCTemplate.getConnection();
 		
-		HashMap<Integer, String> photo = new PartnersDao().selectConstPhoto(con, mCode);
+		HashMap<Integer, String> photo = new MypageDao().selectConstPhoto(con, mCode);
 		
 		JDBCTemplate.close(con);
 		
@@ -50,5 +51,30 @@ public class MypageService {
 		ArrayList<RequestVo> list = new MypageDao().selectOderList(con,mCode);
 		JDBCTemplate.close(con);
 		return list;
+	}
+	public int insertPhoto(String mCode,int num,String newName, String oldName) {
+		Connection con = JDBCTemplate.getConnection();
+		
+		int result = new MypageDao().insertPhoto(con,mCode,num,newName,oldName);
+		if(0 < result){
+			JDBCTemplate.commit(con);
+		}else{
+			JDBCTemplate.rollback(con);
+		}
+		
+		JDBCTemplate.close(con);
+		return result;
+	}
+	public int deletePhoto(String mCode, String chk) {
+		Connection con = JDBCTemplate.getConnection();
+		
+		int result = new MypageDao().deletePhoto(con,mCode,chk);
+		if(0 < result){
+			JDBCTemplate.commit(con);
+		}else{
+			JDBCTemplate.rollback(con);
+		}
+		JDBCTemplate.close(con);
+		return result;
 	}
 }

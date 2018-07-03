@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Properties;
 
 import ein.mono.board.model.vo.PostVo;
@@ -142,12 +144,76 @@ public class MypageDao {
 		return list;
 	}
 
-	public int insertPhoto(Connection con) {
+	public int insertPhoto(Connection con, String mCode,int num,String newName, String oldName) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		String query = "";
 		
 		query = prop.getProperty("insertPhoto");
-		return 0;
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, mCode);
+			pstmt.setString(2, oldName);
+			pstmt.setInt(3, num);
+			pstmt.setString(4, newName);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int deletePhoto(Connection con, String mCode, String chk) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "";
+		String[] chkList = chk.split(",");
+		int num=0;
+		
+		try {
+			for(int i=0;i<chkList.length;i++){
+				query = prop.getProperty("deletePhoto");
+				num = Integer.parseInt(chkList[i]);
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, mCode);
+				pstmt.setInt(2, num);
+				result += pstmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	public HashMap<Integer, String> selectConstPhoto(Connection con, String ptnCode) {
+		HashMap<Integer, String> ptnPhoto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = null;
+		try {
+			//1. 쿼리 전송 객체 생성
+			query = prop.getProperty("selectConstPhoto");
+			pstmt = con.prepareStatement(query);
+			//2. 쿼리 작성
+			pstmt.setString(1, ptnCode);
+			//3. 쿼리 실행
+			rs = pstmt.executeQuery();
+			//4. 결과 처리(resultSet-list parsing)
+			ptnPhoto = new HashMap<Integer, String>();
+			while(rs.next()){
+				ptnPhoto.put(rs.getInt("NUM"), rs.getString("PHOTO_NEWNAME"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			//5. 자원 반납(close)
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		//6. 결과 리턴	
+		return ptnPhoto;
 	}
 }
