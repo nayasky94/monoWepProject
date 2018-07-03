@@ -30,7 +30,7 @@ public class DeletePhotoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String chk = request.getParameter("chk");
 		String mCode = request.getParameter("mCode");
-		
+		System.out.println(chk);
 		int result = new MypageService().deletePhoto(mCode,chk);
 
 		if(0 < result){
