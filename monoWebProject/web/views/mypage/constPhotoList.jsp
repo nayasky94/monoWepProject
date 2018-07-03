@@ -45,7 +45,7 @@
 				<div class="photoDiv"></div>
 			<%} %>
 		<%} %>
-		<form action="/mono/photoInsert.do?Num=<%=list.size()%>" method="post" enctype="Multipart/form-data">
+		<form action="/mono/photoInsert.do?num=<%=list.size()%>" method="post" enctype="Multipart/form-data">
 			<input type="file" name="fileName">
 			<input type="submit" value="사진 업로드">
 		</form>

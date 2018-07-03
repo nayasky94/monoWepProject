@@ -55,7 +55,7 @@ public class PhotoInsertServlet extends HttpServlet {
 		
 		MultipartRequest mRequest = new MultipartRequest(request, path,maxSize,"UTF-8",new MyRenamePolicy());
 		
-		int num = Integer.parseInt(mRequest.getParameter("lastNum"));
+		int num = Integer.parseInt(mRequest.getParameter("num"));
 		//String mCode = mRequest.getParameter("mCode");
 		String newName = mRequest.getFilesystemName("fileName");
 		String oldName = mRequest.getOriginalFileName("fileName");
