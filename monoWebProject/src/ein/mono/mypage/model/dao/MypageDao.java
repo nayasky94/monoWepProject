@@ -144,7 +144,7 @@ public class MypageDao {
 		return list;
 	}
 
-	public int insertPhoto(Connection con, String mCode,int num,String newName, String oldName) {
+	public int insertPhoto(Connection con, String mCode,String newName, String oldName) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		String query = "";
@@ -154,8 +154,7 @@ public class MypageDao {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, mCode);
 			pstmt.setString(2, oldName);
-			pstmt.setInt(3, num);
-			pstmt.setString(4, newName);
+			pstmt.setString(3, newName);
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -204,7 +203,7 @@ public class MypageDao {
 			//4. 결과 처리(resultSet-list parsing)
 			ptnPhoto = new HashMap<Integer, String>();
 			while(rs.next()){
-				ptnPhoto.put(rs.getInt("NUM"), rs.getString("PHOTO_NEWNAME"));
+				ptnPhoto.put(rs.getInt("PHOTO_NUM"), rs.getString("PHOTO_NEWNAME"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

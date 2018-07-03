@@ -52,10 +52,10 @@ public class MypageService {
 		JDBCTemplate.close(con);
 		return list;
 	}
-	public int insertPhoto(String mCode,int num,String newName, String oldName) {
+	public int insertPhoto(String mCode,String newName, String oldName) {
 		Connection con = JDBCTemplate.getConnection();
 		
-		int result = new MypageDao().insertPhoto(con,mCode,num,newName,oldName);
+		int result = new MypageDao().insertPhoto(con,mCode,newName,oldName);
 		if(0 < result){
 			JDBCTemplate.commit(con);
 		}else{

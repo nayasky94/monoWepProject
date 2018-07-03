@@ -35,21 +35,23 @@
 		<%@include file="/views/mypage/maside.jsp" %>
 	</div>
 	<div class="outer">
-		<%for(int i =0;i<list.size();i++){ %>
-			<%if(null != list.get(i)){ %>
-				<div class="photoDiv">
-					<input type="checkbox" name="chk" value="<%=i%>">
-					<img class="imgFile" src = "/mono/upload/const_photo/<%=list.get(i)%>" >
-				</div>
-			<%}else{ %>
-				<div class="photoDiv"></div>
-			<%} %>
+		<%for(int key : list.keySet()){ %>
+			<div class="photoDiv">
+				<input type="checkbox" name="chk" value="<%=key%>" id="<%=key%>">
+				<img class="imgFile" src="/mono/upload/const_photo/<%=list.get(key)%>" onclick="clickImg(<%=key%>);">
+			</div>
+			
 		<%} %>
-		<form action="/mono/photoInsert.do?num=<%=list.size()%>" method="post" enctype="Multipart/form-data">
-			<input type="file" name="fileName">
-			<input type="submit" value="사진 업로드">
-		</form>
-		<button id="deleteBtn">사진 삭제</button>
+		<%if(8 > list.size()){ %>
+			<form action="/mono/photoInsert.do?" method="post" enctype="Multipart/form-data">
+				<input type="file" name="fileName">
+				<input type="submit" value="사진 업로드">
+			</form>
+		<%}else{ %>
+			<h3>사진은 8개 까지만 가능합니다.</h3>
+		<%} %>
+			<button id="deleteBtn">사진 삭제</button>		
+		
 	</div>
 	<script>
 	$(function(){
@@ -61,11 +63,18 @@
 				}
 			});
 			var str = list.join(",");
-			console.log(str);
 			location.href = "/mono/deletePhoto.do?chk="+str+"&mCode=P_2";
 			
 		});
 	});
+	function clickImg(key){
+		var chk = $("input:checkbox[id='"+key+"']");
+		if(!chk.prop("checked")){
+			chk.attr("checked",true);			
+		}else{
+			chk.attr("checked",false);
+		}
+	}
 	
 	</script>
 	

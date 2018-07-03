@@ -1,9 +1,7 @@
 package ein.mono.mypage.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,6 +38,7 @@ public class PhotoInsertServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=utf-8");
 		
 		int maxSize = 1024*1024*10;
 		
@@ -55,19 +54,24 @@ public class PhotoInsertServlet extends HttpServlet {
 		
 		MultipartRequest mRequest = new MultipartRequest(request, path,maxSize,"UTF-8",new MyRenamePolicy());
 		
-		int num = Integer.parseInt(mRequest.getParameter("num"));
 		//String mCode = mRequest.getParameter("mCode");
 		String newName = mRequest.getFilesystemName("fileName");
 		String oldName = mRequest.getOriginalFileName("fileName");
-		System.out.println(newName);
-		System.out.println(oldName);
-		int result = new MypageService().insertPhoto("P_2",num,newName,oldName);
-		
-		System.out.println(result);
-		if(0 < result){
-			response.sendRedirect("/mono/constList.do");
+		if(null == oldName){
+			PrintWriter out = response.getWriter();
+			out.println("<html>");
+			out.println("<script>");
+			out.println("alert('파일을 선택해 주세요');");
+			out.println("location.href='/mono/constList.do';");
+			out.println("</script>");
+			out.println("</html>");
 		}else{
-			System.out.println("error");
+			int result = new MypageService().insertPhoto("P_2",newName,oldName);		
+			if(0 < result){
+				response.sendRedirect("/mono/constList.do");
+			}else{
+				System.out.println("error");
+			}			
 		}
 		
 	}
