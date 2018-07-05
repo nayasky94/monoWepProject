@@ -21,10 +21,10 @@ public class AttachmentService {
 		return list;
 	}
 
-	public ArrayList<AttachmentVo> selectThumnailAttachmentList() {
+	public ArrayList<PostVo> selectThumnailAttachmentList(String post_type) {
 		Connection con = JDBCTemplate.getConnection();
 		
-		ArrayList<AttachmentVo> list = new AttachmentDao().selectThumnailAttachmentList(con);
+		ArrayList<PostVo> list = new AttachmentDao().selectThumnailAttachmentList(con,post_type);
 		
 		JDBCTemplate.close(con);
 		

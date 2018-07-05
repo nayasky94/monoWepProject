@@ -71,13 +71,33 @@ public class PostService {
 		return result;
 	}
 
-	public ArrayList<PostVo> searchPost(int condition, String keyword) {
+	public ArrayList<PostVo> searchPost( String keyword) {
 		Connection con = JDBCTemplate.getConnection();
 
-		ArrayList<PostVo> postList = new PostDao().searchPost(con, condition, keyword);
+		ArrayList<PostVo> postList = new PostDao().searchPost(con, codition, keyword);
 		
 		JDBCTemplate.close(con);
 		
 		return postList;
+	}
+
+	public int selectPostTotalCount(String post_type) {
+		
+		//1. 커넥션 연결
+				Connection con = JDBCTemplate.getConnection();
+				//2. dao 메소드 호출
+				int listCount = new PostDao().selectPostTotalCount(con,post_type);
+				//3. 자원 반납(close)
+				JDBCTemplate.close(con);
+				//4. 해당 결과 리턴
+				return listCount;
+		
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int selectPostTotalCount(String post_type, int condition, String keyword) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

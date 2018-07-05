@@ -127,6 +127,9 @@
   function myPage(){
 	  location.href="/mono/views/mypage/mypage.jsp";
   }
+  function boardPage(posttype){
+	  location.href="/mono/selectPostList.do?posttype="+posttype;
+  }
   </script>
 </head>
 <body>
@@ -155,10 +158,10 @@
 						<li>
 							BOARD
 							<ul>
-								<li>자유게시판</li>
-								<li>마이룸</li>
-								<li>오픈마켓</li>
-								<li>후기게시판</li>
+								<li onclick="boardPage('자유게시판');">자유게시판</li>
+								<li onclick="boardPage('SHO');">마이룸</li>
+								<li onclick="boardPage('오픈마켓');">오픈마켓</li>
+								<li onclick="boardPage('후기게시판');">후기게시판</li>
 							</ul>
 						</li>
 					</ul>

@@ -64,7 +64,7 @@ public class MypageDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+		System.out.println(result.size());
 		return result;
 	}
 	

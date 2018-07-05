@@ -68,6 +68,7 @@ public class InsertPostServlet extends HttpServlet {
 			originNames.add(mRequest.getOriginalFileName("galleryImage" + (i + 1)));
 		}
 		
+		
 		// attachment 객체를 담은 리스트
 		ArrayList<AttachmentVo> list = new ArrayList<AttachmentVo>();
 		AttachmentVo temp = null;
@@ -84,6 +85,7 @@ public class InsertPostServlet extends HttpServlet {
 		
 		if(0 < result && 0 < result_insertAttachment) {
 			// 게시글 목록으로 이동
+			
 		} else {
 			// 에러 페이지? 게시글 목록?
 		}

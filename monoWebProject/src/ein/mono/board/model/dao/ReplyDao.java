@@ -19,7 +19,11 @@ public class ReplyDao {
 		
 		try {
 			// post_code를 비교해서 해당 게시글의 댓글만 가져와야함
-			query = "";
+			query = " SELECT REPLY_CODE, POST_CODE, REPLY_CONTENT, WRITER_CODE, REPLY_DATE, DELFLAG, MEMBER_NAME "
+				+" FROM REPLY "
+				+" JOIN MEMBER ON (WRITER_CODE = MEMBER_CODE) "
+                +" JOIN REPLY_REC_COUNT USING (REPLY_CODE) "
+				+" WHERE POST_CODE = ? ";  
 
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, post_code);
@@ -30,6 +34,16 @@ public class ReplyDao {
 			ReplyVo temp = null;
 			while(rs.next()) {
 				temp = new ReplyVo();
+				temp.setReply_code(rs.getString("Reply_code"));
+				temp.setPost_code(rs.getString(post_code));
+				temp.setReply_content(rs.getString("reply_code"));
+				temp.setWriter_code(rs.getString("writer_code"));
+				temp.setMember_name(rs.getString("member_name"));
+				
+				temp.setWriteDate(rs.getDate("cdate"));
+				String flag = rs.getString("delflag");
+				temp.setDelFlag(flag.equals("N") ? false : true);
+				
 				
 				list.add(temp);
 			}

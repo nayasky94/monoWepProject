@@ -3,12 +3,14 @@ package ein.mono.board.model.dao;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 
 import ein.mono.board.model.vo.AttachmentVo;
@@ -30,35 +32,60 @@ public class AttachmentDao {
 	}
 	
 	// 내 방 자랑/ 후기 게시판 썸네일 이미지 select(file_level을 조회 조건으로)
-	public ArrayList<AttachmentVo> selectThumnailAttachmentList(Connection con) {
-		ArrayList<AttachmentVo> list = null;
-		Statement stmt = null;
+	public ArrayList<PostVo> selectThumnailAttachmentList(Connection con, String post_type) {
+		ArrayList<PostVo> list = new ArrayList<PostVo>();
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
 		
+		query = prop.getProperty("selectThumnailAttachmentList");
 		try {
-			stmt = con.createStatement();
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, post_type);
+			rs = pstmt.executeQuery();			
 			
-			query = prop.getProperty("selectThumnailAttachmentList");
-			
-			rs = stmt.executeQuery(query);
-			list = new ArrayList<AttachmentVo>();
-			AttachmentVo temp = null;
+			PostVo temp = null;
 			while(rs.next()) {
-				temp = new AttachmentVo();
+				int num = rs.getInt("num");
+				String pCode = rs.getString("post_code");
+				String title = rs.getString("title");
+				String clobString = readClobData(rs.getCharacterStream("content"));
+				String nName = rs.getString("member_nname");
+				Date wDate = rs.getDate("written_Date");
+				
+				temp = new PostVo();
+				temp.setNum(num);
+				temp.setPost_code(pCode);
+				temp.setTitle(title);
+				temp.setContent(clobString);
+				temp.setMember_name(nName);
+				temp.setWritten_date(wDate);
 				
 				list.add(temp);
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rs);
-			JDBCTemplate.close(stmt);
+			JDBCTemplate.close(pstmt);
 		}
 		
 		return list;
 	}
+	public static String readClobData(Reader reader) throws IOException {
+        StringBuffer data = new StringBuffer();
+        char[] buf = new char[1024];
+        int cnt = 0;
+        if (null != reader) {
+            while ( (cnt = reader.read(buf)) != -1) {
+                data.append(buf, 0, cnt);
+            }
+        }
+        return data.toString();
+    }
 	
 	// post_code에 첨부된 파일들만 select
 	public ArrayList<AttachmentVo> selectAttachmentList(Connection con, String post_code) {

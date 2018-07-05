@@ -8,8 +8,17 @@ public class ReplyVo {
 	private String post_code;
 	private String reply_content;
 	private Date reply_date;
+	private String member_name;
 	
 	
+	public String getMember_name() {
+		return member_name;
+	}
+
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
+	}
+
 	public ReplyVo() {
 		super();
 	}
@@ -63,9 +72,22 @@ public class ReplyVo {
 
 	@Override
 	public String toString() {
-		return "CommentVo [reply_code=" + reply_code + ", writer_code=" + writer_code + ", post_code=" + post_code
-				+ ", reply_content=" + reply_content + ", reply_date=" + reply_date + ", toString()=" + super.toString()
+		return "ReplyVo [reply_code=" + reply_code + ", writer_code=" + writer_code + ", post_code=" + post_code
+				+ ", reply_content=" + reply_content + ", reply_date=" + reply_date + ", member_name=" + member_name
 				+ "]";
 	}
+
+	public void setWriteDate(java.sql.Date date) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDelFlag(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
 	
 }
