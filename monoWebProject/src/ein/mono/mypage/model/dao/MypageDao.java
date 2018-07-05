@@ -91,7 +91,7 @@ public class MypageDao {
 				temp = new PostVo();
 				temp.setPost_code(qCode);
 				temp.setTitle(title);
-				temp.setnName(nName);
+				temp.setWriter_nickname(nName);
 				temp.setViews_count(vCount);
 				temp.setWritten_date(wDate);
 				

@@ -15,8 +15,17 @@ public class PostVo {
 	private String file; //첨부파일 여러개 할거야
 	private String writer_name;
 	private int num;
+	private String name;
 	
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getFile() {
 		return file;
 	}
@@ -51,6 +60,12 @@ public class PostVo {
 		this.writer_code = writer_code;
 		this.title = title;
 		this.content = content;
+	}
+
+	public PostVo(String title, int vCount, Date wDate) {
+		this.title = title;
+		this.views_count = vCount;
+		this.written_date=wDate;
 	}
 
 	public String getPost_code() {

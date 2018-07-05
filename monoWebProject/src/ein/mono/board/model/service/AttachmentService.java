@@ -58,5 +58,15 @@ public class AttachmentService {
 		
 		return result;
 	}
+
+	public int insertGallary(String title, String content, String mCode, String pType) {
+		Connection con = JDBCTemplate.getConnection();
+		
+		int result = new AttachmentDao().insertGallery(con,title,content,mCode,pType);
+		
+		JDBCTemplate.close(con);
+		
+		return result;
+	}
 	
 }

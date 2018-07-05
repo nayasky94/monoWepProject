@@ -1,9 +1,11 @@
 package ein.mono.board.model.dao;
 
+import java.io.CharArrayReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,9 +15,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
+import com.sun.prism.Presentable;
+
 import ein.mono.board.model.vo.AttachmentVo;
 import ein.mono.board.model.vo.PostVo;
 import ein.mono.common.JDBCTemplate;
+import oracle.jdbc.OracleResultSet;
+import oracle.sql.CLOB;
 
 public class AttachmentDao {
 	Properties prop = new Properties();
@@ -148,6 +154,63 @@ public class AttachmentDao {
 	public int updateAttachment(Connection con, String post_code, ArrayList<AttachmentVo> list) {
 		int result = 0;
 		
+		return result;
+	}
+
+	public int insertGallery(Connection con, String title, String content, String mCode, String pType) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "";
+		
+		query = prop.getProperty("insertGallery");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, pType);
+			pstmt.setString(2, mCode);
+			pstmt.setString(3, title);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			JDBCTemplate.close(pstmt);
+		}
+		if(result == 1){
+			query = "SELECT CONTENT FROM POST WHERE POST_CODE = ? FOR UPDATE";
+			try {
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, mCode);
+				ResultSet rs = pstmt.executeQuery();
+				
+				String strClob = content;
+				if(rs.next()){
+					CLOB clob = ((OracleResultSet)rs).getCLOB("content");
+					Writer writer = clob.getCharacterOutputStream();
+					Reader reader = new CharArrayReader(strClob.toCharArray());
+					char[] buffer = new char[1024];
+					int read = 0;
+					
+					try {
+						while((read = reader.read(buffer, 0, 1024)) != -1){
+							writer.write(buffer,0,read);
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally{
+						try {
+							reader.close();
+							writer.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+				
 		return result;
 	}
 }
