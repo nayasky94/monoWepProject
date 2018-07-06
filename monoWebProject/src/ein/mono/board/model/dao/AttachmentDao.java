@@ -55,7 +55,7 @@ public class AttachmentDao {
 				int num = rs.getInt("num");
 				String pCode = rs.getString("post_code");
 				String title = rs.getString("title");
-				String clobString = readClobData(rs.getCharacterStream("content"));
+				String clobString = readClobData(rs.getCharacterStream("CONT"));
 				String nName = rs.getString("member_nname");
 				Date wDate = rs.getDate("written_Date");
 				
@@ -157,10 +157,15 @@ public class AttachmentDao {
 		return result;
 	}
 
-	public int insertGallery(Connection con, String title, String content, String mCode, String pType) {
+	public int insertGallery(Connection con, PostVo p) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		String query = "";
+		
+		String pType = p.getPost_type();
+		String mCode = p.getWriter_code();
+		String title = p.getTitle();
+		String content = p.getContent();
 		
 		query = prop.getProperty("insertGallery");
 		try {
@@ -168,6 +173,7 @@ public class AttachmentDao {
 			pstmt.setString(1, pType);
 			pstmt.setString(2, mCode);
 			pstmt.setString(3, title);
+			pstmt.setString(4, content);
 			
 			result = pstmt.executeUpdate();
 			
@@ -176,40 +182,40 @@ public class AttachmentDao {
 		} finally{
 			JDBCTemplate.close(pstmt);
 		}
-		if(result == 1){
-			query = "SELECT CONTENT FROM POST WHERE POST_CODE = ? FOR UPDATE";
-			try {
-				pstmt = con.prepareStatement(query);
-				pstmt.setString(1, mCode);
-				ResultSet rs = pstmt.executeQuery();
-				
-				String strClob = content;
-				if(rs.next()){
-					CLOB clob = ((OracleResultSet)rs).getCLOB("content");
-					Writer writer = clob.getCharacterOutputStream();
-					Reader reader = new CharArrayReader(strClob.toCharArray());
-					char[] buffer = new char[1024];
-					int read = 0;
-					
-					try {
-						while((read = reader.read(buffer, 0, 1024)) != -1){
-							writer.write(buffer,0,read);
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally{
-						try {
-							reader.close();
-							writer.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+//		if(result == 1){
+//			query = "SELECT CONTENT FROM POST WHERE POST_CODE = ? FOR UPDATE";
+//			try {
+//				pstmt = con.prepareStatement(query);
+//				pstmt.setString(1, mCode);
+//				ResultSet rs = pstmt.executeQuery();
+//				
+//				String strClob = content;
+//				if(rs.next()){
+//					CLOB clob = ((OracleResultSet)rs).getCLOB("content");
+//					Writer writer = clob.getCharacterOutputStream();
+//					Reader reader = new CharArrayReader(strClob.toCharArray());
+//					char[] buffer = new char[1024];
+//					int read = 0;
+//					
+//					try {
+//						while((read = reader.read(buffer, 0, 1024)) != -1){
+//							writer.write(buffer,0,read);
+//						}
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					} finally{
+//						try {
+//							reader.close();
+//							writer.close();
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
 				
 		return result;
 	}

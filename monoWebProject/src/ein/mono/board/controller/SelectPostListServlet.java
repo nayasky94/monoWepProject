@@ -75,6 +75,7 @@ public class SelectPostListServlet extends HttpServlet {
 			if(null != thumnailList){
 				url = "views/board/boardGalleryList.jsp";
 				request.setAttribute("list", thumnailList);
+				
 			}else{
 				System.out.println("error");
 			}

@@ -1,16 +1,33 @@
 package ein.mono.board.model.dao;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
 
 import ein.mono.board.model.vo.PostVo;
 import ein.mono.common.JDBCTemplate;
 
 public class PostDao {
+	Properties prop = new Properties();
+
+	public PostDao(){
+		String filename = AttachmentDao.class.getResource("/post/post_sql.properties").getPath();
+		try {
+			prop.load(new FileReader(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ArrayList<PostVo> selectPostList(Connection con, String post_type) {
 		PreparedStatement pstmt = null;
@@ -64,46 +81,39 @@ public class PostDao {
 	}
 
 	public PostVo selectPost(Connection con, String post_code) {
-		// post_code를 where조건에서 사용하여 게시글 하나 select해서 리턴
 		PostVo post = new PostVo();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
-		//1. 쿼리 작성
-		query = "SELECT POST_CODE, POST_TYPE, WRITER_CODE, TITLE, CONTENT, VIEWS_COUNT, WRITTEN_DATE, POST.DELFLAG, MEMBER_NAME " 
-				+"FROM POST, MEMBER "  
-				+"WHERE POST.WRITER_CODE = MEMBER.MEMBER_CODE "
-                +"AND POST_CODE = ?";
+		
+		query = prop.getProperty("selectPost");
 		try {
-			//2. 쿼리 실행 객체 생성
 			pstmt = con.prepareStatement(query);
-			//3. 파라미터 설정
 			pstmt.setString(1, post_code);
-			//4. 쿼리 실행
 			rs = pstmt.executeQuery();
-			//5. 결과 처리(resultset)
 			while(rs.next()){
-				post = new PostVo();
-				post.setPost_code(rs.getString("POST_CODE"));
-				post.setPost_type(rs.getString("POST_TYPE"));
-				post.setWriter_code(rs.getString("WRITER_CODE"));
-				post.setTitle(rs.getString("TITLE"));
-				post.setContent(rs.getString("CONTENT"));
-				post.setViews_count(rs.getInt("VIEWS_COUNT"));
-				post.setWritten_date(rs.getDate("WRITTEN_DATE"));
-				post.setDel_flag(rs.getString("DELFLAG"));
-				post.setMember_name(rs.getString("MEMBER_NAME"));
+				String pType = rs.getString("post_type");
+				String nName = rs.getString("member_nname");
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				int vCount = rs.getInt("views_count");
+				Date wDate = rs.getDate("written_date");
 				
+				post.setPost_code(post_code);
+				post.setPost_type(pType);
+				post.setWriter_nickname(nName);
+				post.setTitle(title);
+				post.setContent(content);
+				post.setViews_count(vCount);
+				post.setWritten_date(wDate);
 			}
-				
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-			//6. 자원 반납
+		} finally{
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		//7. 결과 값 return
+		
 		return post;
 	}
 
@@ -128,8 +138,27 @@ public class PostDao {
 	}
 
 	public int updatePost(Connection con, PostVo post) {
-		// post 내용 변경.
 		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "";
+		String pCode = post.getPost_code();
+		String title = post.getTitle();
+		String content = post.getContent();
+		
+		query = prop.getProperty("updatePost");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setString(3, pCode);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			JDBCTemplate.close(pstmt);
+		}
 		
 		return result;
 	}

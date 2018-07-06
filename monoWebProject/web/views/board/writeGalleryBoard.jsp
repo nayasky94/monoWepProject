@@ -9,39 +9,19 @@
 <head>
 <meta charset="UTF-8">
 <title>이미지 게시판 글쓰기</title>
-<script type="text/javascript" src="/mono/js/jquery-3.3.1.min.js"></script>
-<!-- Main Quill library -->
-<script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-<script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-<!-- Theme included stylesheets -->
-<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
-
-<!-- Core build with no theme, formatting, non-essential modules -->
-<link href="//cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
-<script src="//cdn.quilljs.com/1.3.6/quill.core.js"></script>
-
-<!-- Include the Quill library -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
-	rel="stylesheet">
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
 <style>
-#editor-container {
-	width: 1000px;
-	height: 400px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.ql-toolbar, .ql-snow {
-	width: 1000px;
-	height: 50px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
+.outer{
+			width:1000px;
+			height:500px;
+			margin-left:auto;
+			margin-right:auto;
+		}
 #sky {
 	width: 1000px;
 	height: 30px;
@@ -56,6 +36,10 @@
 	margin-left: auto;
 	margin-right: 350px;
 }
+#titleDiv{
+	border:1px solid gray;
+	font-size:20px;
+}
 </style>
 
 </head>
@@ -65,37 +49,30 @@
 	<br>
 	<br>
 	<h1 align="center">마이룸 게시글 쓰기</h1>
-	<form action="/mono/writeGallery.do" method="post" enctype="multipart/form-data">
-		<table id="sky">
-			<tr>
-				<th>글 제목</th>
-				<td><input type="text" size="100" name="titleText"></td>
-			</tr>
-		</table>
-		<!-- Include stylesheet -->
-
-		<!-- Create the editor container -->
-		<div id="editor-container" id="content"></div>
-
-		<br> <br>
-		<div id="btnDiv">
-			<input type="submit" value="작성완료">
-		</div>
-	</form>
-
-	<!-- Initialize Quill editor -->
-	<script>
-		var quill = new Quill('#editor-container', {
-			modules : {
-				toolbar : [ [ {
-					header : [ 1, 2, false ]
-				} ], [ 'bold', 'italic', 'underline' ],
-						[ 'image', 'code-block' ] ]
-			},
-			placeholder : 'Compose an epic...',
-			theme : 'snow' // or 'bubble'
-
-		});
-	</script>
+	<div class="outer">
+		<form method="post" action="/mono/writeGallery.do">
+			<div id="titleDiv">글 제목 <input type="text" name="title" size="95"></div>
+			<input type="hidden" name="sky">
+			<div id="summernote"></div>
+			<button id="submitBtn">확인</button>
+		</form>
+	</div>
+    <script>
+      $('#summernote').summernote({
+        placeholder: 'Hello bootstrap 4',
+        tabsize: 2,
+        height: 100,
+        height: 300,                 // set editor height
+  	  	minHeight: 100,             // set minimum height of editor
+  	  	maxHeight: 300,             // set maximum height of editor
+  	  	focus: true                  // set focus to editable area after initializing summernote
+      });
+      $("#submitBtn").click(function(){
+    	  var markupStr = $('#summernote').summernote('code');
+    	  $("input[name=sky]").val(markupStr);
+    	  $("form").submit();
+      });
+    </script>
+    
 </body>
 </html>

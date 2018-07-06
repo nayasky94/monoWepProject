@@ -71,15 +71,6 @@ public class PostService {
 		return result;
 	}
 
-	public ArrayList<PostVo> searchPost( String keyword) {
-		Connection con = JDBCTemplate.getConnection();
-
-		ArrayList<PostVo> postList = new PostDao().searchPost(con, codition, keyword);
-		
-		JDBCTemplate.close(con);
-		
-		return postList;
-	}
 
 	public int selectPostTotalCount(String post_type) {
 		
@@ -99,5 +90,15 @@ public class PostService {
 	public int selectPostTotalCount(String post_type, int condition, String keyword) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public PostVo getPost(String pCode) {
+		Connection con = JDBCTemplate.getConnection();
+		
+		PostVo result = new PostDao().selectPost(con, pCode);
+		
+		JDBCTemplate.close(con);
+		
+		return result;
 	}
 }

@@ -59,10 +59,15 @@ public class AttachmentService {
 		return result;
 	}
 
-	public int insertGallary(String title, String content, String mCode, String pType) {
+	public int insertGallary(PostVo p) {
 		Connection con = JDBCTemplate.getConnection();
 		
-		int result = new AttachmentDao().insertGallery(con,title,content,mCode,pType);
+		int result = new AttachmentDao().insertGallery(con,p);
+		if(result > 0){
+			JDBCTemplate.commit(con);
+		}else{
+			JDBCTemplate.rollback(con);
+		}
 		
 		JDBCTemplate.close(con);
 		

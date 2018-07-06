@@ -1,6 +1,8 @@
 package ein.mono.board.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ein.mono.board.model.service.AttachmentService;
+import ein.mono.board.model.vo.PostVo;
 
 /**
  * Servlet implementation class WriteGalleryServlet
@@ -28,17 +31,24 @@ public class WriteGalleryServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		
-		
 		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		System.out.println(content);
+		String content = request.getParameter("sky");
 		String mCode = request.getParameter("mCode");
-		String pType = request.getParameter("pType");
+		String pType = "SHO";
+
+		PostVo p = new PostVo();
+		p.setTitle(title);
+		p.setContent(content);
+		p.setWriter_code("B_1");
+		p.setPost_type(pType);
 		
-		int result = new AttachmentService().insertGallary(title,content,mCode,pType);
+		int result = new AttachmentService().insertGallary(p);
 		
-		System.out.println(result);	
+		if(0 < result){
+			response.sendRedirect("/mono/selectPostList.do?posttype="+pType);		
+		}else{
+			System.out.println("error");
+		}
 	}
 
 }
