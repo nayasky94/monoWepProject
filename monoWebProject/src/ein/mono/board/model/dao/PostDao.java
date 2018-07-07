@@ -3,6 +3,7 @@ package ein.mono.board.model.dao;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +20,7 @@ public class PostDao {
 	Properties prop = new Properties();
 
 	public PostDao(){
-		String filename = AttachmentDao.class.getResource("/post/post_sql.properties").getPath();
+		String filename = PostDao.class.getResource("/post/post_sql.properties").getPath();
 		try {
 			prop.load(new FileReader(filename));
 		} catch (FileNotFoundException e) {
@@ -30,55 +31,59 @@ public class PostDao {
 	}
 
 	public ArrayList<PostVo> selectPostList(Connection con, String post_type) {
-		PreparedStatement pstmt = null;
-		String query = null;
-		ResultSet rs = null;
 		ArrayList<PostVo> list = new ArrayList<PostVo>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+		
+		query = prop.getProperty("selectPostList");
 		try {
-			// post_type과 일치하는 게시글만 가져오기. 
-			// 회원 테이블과 조인해서 작성자의 닉네임도 가져오기.
-			query = "SELECT POST_CODE, POST_TYPE, WRITER_CODE, TITLE, CONTENT, VIEWS_COUNT," 
-					 +"WRITTEN_DATE, POST.DELFLAG, MEMBER_NAME "
-					 +"FROM POST "
-					 +"join member on( WRITER_CODE = MEMBER_CODE) "
-					 + "where POST_TYPE = ?";
-
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, post_type);
+			rs = pstmt.executeQuery();			
 			
-			rs = pstmt.executeQuery();
-			
-			// 결과 처리(select -> resultSet)
 			PostVo temp = null;
 			while(rs.next()) {
-                temp = new PostVo();
-                temp.setPost_code(rs.getString("post_code"));
-                temp.setPost_type(rs.getString("post_type"));
-                temp.setWriter_code(rs.getString("writer_code"));
-                temp.setTitle(rs.getString("title"));
-                temp.setContent(rs.getString("content"));
-                temp.setViews_count(rs.getInt("views_count"));
-                temp.setTitle(rs.getString("title"));
-                temp.setWritten_date(rs.getDate("written_date"));
-                temp.setDel_flag(rs.getString("delflag"));
-                temp.setMember_name(rs.getString("member_name"));
-                
-                
-               
-                
-                
+				int num = rs.getInt("num");
+				String pCode = rs.getString("post_code");
+				String title = rs.getString("title");
+				String clobString = readClobData(rs.getCharacterStream("CONT"));
+				String nName = rs.getString("member_nname");
+				Date wDate = rs.getDate("written_Date");
+				
+				temp = new PostVo();
+				temp.setNum(num);
+				temp.setPost_code(pCode);
+				temp.setTitle(title);
+				temp.setContent(clobString);
+				temp.setWriter_nickname(nName);
+				temp.setWritten_date(wDate);
+				
 				list.add(temp);
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} finally {
-			// close 처리
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
+		
 		return list;
 	}
+	public static String readClobData(Reader reader) throws IOException {
+        StringBuffer data = new StringBuffer();
+        char[] buf = new char[1024];
+        int cnt = 0;
+        if (null != reader) {
+            while ( (cnt = reader.read(buf)) != -1) {
+                data.append(buf, 0, cnt);
+            }
+        }
+        return data.toString();
+    }
 
 	public PostVo selectPost(Connection con, String post_code) {
 		PostVo post = new PostVo();
@@ -94,6 +99,7 @@ public class PostDao {
 			while(rs.next()){
 				String pType = rs.getString("post_type");
 				String nName = rs.getString("member_nname");
+				String mCdoe = rs.getString("member_code");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
 				int vCount = rs.getInt("views_count");
@@ -102,6 +108,7 @@ public class PostDao {
 				post.setPost_code(post_code);
 				post.setPost_type(pType);
 				post.setWriter_nickname(nName);
+				post.setWriter_code(mCdoe);
 				post.setTitle(title);
 				post.setContent(content);
 				post.setViews_count(vCount);
@@ -116,27 +123,6 @@ public class PostDao {
 		
 		return post;
 	}
-
-	public int insertPost(Connection con, PostVo post) {
-		// post 객체 게시글 테이블에 insert
-		// post_code는 sql 쿼리에서 sequence이용해서 넣어줘야함
-		// 		-> post_type에 따라서 if문 또는 switch문 사용하고 
-		//			게시판 종류별 스트링 값을 sequence 앞에 붙여줘야함
-		// 작성일과 조회수는 default 값 (sysdate, 0).
-		int result = 0;
-		
-		return result;
-	}
-
-	public int deletePost(Connection con, String post_code) {
-		// post_code에 해당하는 게시글 삭제
-		// delflag를 y로 바꾸는 update문 실행
-		
-		int result = 0;
-		
-		return result;
-	}
-
 	public int updatePost(Connection con, PostVo post) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -163,61 +149,92 @@ public class PostDao {
 		return result;
 	}
 
-	// 검색조건과 키워드로 해당되는 게시글 select
-	public ArrayList<PostVo> searchPost(Connection con, int condition, String keyword) {
-		ArrayList<PostVo> list = null;
-		
-/*		switch(condition) {
-		case 1:
-			// 제목
-			query += "WHERE NTITLE LIKE '%" + keyword + "%'";
-			break;
-		case 2:
-			query += "WHERE NCONTENT LIKE '%" + keyword + "%'";
-			break;
-		case 3:
-			query += "WHERE USERNAME LIKE '%" + keyword + "%'";
-			break;
-		case 0:
-			query += "WHERE (USERNAME LIKE '%" + keyword + "%'";
-			query += "OR NCONTENT LIKE '%" + keyword + "%'";
-			query += "OR NTITLE LIKE '%" + keyword + "%')";
-			break;
-		}
-*/		
-		
-		return list;
-	}
-
-	public int selectPostTotalCount(Connection con, String post_type) {
-		int result = -1;
-		Statement stmt = null;
-		ResultSet rs = null;
+	public int insertPost(Connection con, PostVo p) {
+		int result = 0;
+		PreparedStatement pstmt = null;
 		String query = "";
+		
+		String pType = p.getPost_type();
+		String mCode = p.getWriter_code();
+		String title = p.getTitle();
+		String content = p.getContent();
+		
+		query = prop.getProperty("insertPost");
 		try {
-			stmt = con.createStatement();
-			query = "SELECT COUNT(*) AS LISTCOUNT "
-						+ "FROM Post "
-						+ "WHERE DELFLAG != 'Y' AND POST_TYPE='"+post_type+"'";
-			rs = stmt.executeQuery(query);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, pType);
+			pstmt.setString(2, mCode);
+			pstmt.setString(3, title);
+			pstmt.setString(4, content);
 			
-			while(rs.next()){
-				result = rs.getInt("listcount");
-			}
+			result = pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-			JDBCTemplate.close(rs);
-			JDBCTemplate.close(stmt);
+		} finally{
+			JDBCTemplate.close(pstmt);
 		}
-		
-		// TODO Auto-generated method stub
+//		if(result == 1){
+//			query = "SELECT CONTENT FROM POST WHERE POST_CODE = ? FOR UPDATE";
+//			try {
+//				pstmt = con.prepareStatement(query);
+//				pstmt.setString(1, mCode);
+//				ResultSet rs = pstmt.executeQuery();
+//				
+//				String strClob = content;
+//				if(rs.next()){
+//					CLOB clob = ((OracleResultSet)rs).getCLOB("content");
+//					Writer writer = clob.getCharacterOutputStream();
+//					Reader reader = new CharArrayReader(strClob.toCharArray());
+//					char[] buffer = new char[1024];
+//					int read = 0;
+//					
+//					try {
+//						while((read = reader.read(buffer, 0, 1024)) != -1){
+//							writer.write(buffer,0,read);
+//						}
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					} finally{
+//						try {
+//							reader.close();
+//							writer.close();
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+				
 		return result;
 	}
 
-	public ArrayList<PostVo> selectPostLListServlet(Connection con) {
-		// TODO Auto-generated method stub
-		return null;
+	public int deletePost(Connection con, String pCode) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "";
+		
+		query = prop.getProperty("deletePost");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, pCode);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
 	}
+	
+
+	
+	
 
 }

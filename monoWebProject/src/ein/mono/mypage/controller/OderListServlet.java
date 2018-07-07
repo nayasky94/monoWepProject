@@ -34,7 +34,7 @@ public class OderListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mCode = request.getParameter("mCode");
 		
-		ArrayList<RequestVo> list = new MypageService().getOderList("P_2");
+		ArrayList<RequestVo> list = new MypageService().getOderList("C_1");
 		
 		RequestDispatcher view = null;
 		if(0 != list.size()){

@@ -1,7 +1,6 @@
-package ein.mono.mypage.controller;
+package ein.mono.board.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,21 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ein.mono.board.model.service.PostService;
 import ein.mono.board.model.vo.PostVo;
-import ein.mono.mypage.model.service.MypageService;
-import ein.mono.qna.model.vo.QnAVo;
 
 /**
- * Servlet implementation class MyQnAListServlet
+ * Servlet implementation class ModifyBoardFormServlet
  */
-@WebServlet("/myQnaList.do")
-public class MyQnAListServlet extends HttpServlet {
+@WebServlet("/modifyPostForm.do")
+public class ModifyPostFormServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MyQnAListServlet() {
+    public ModifyPostFormServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,15 +31,14 @@ public class MyQnAListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String mCode = request.getParameter("member_code");
+		String pCode = request.getParameter("pCode");
 		
-		ArrayList<PostVo> list = new MypageService().getQnaList("C_1");
+		PostVo post = new PostService().getPost(pCode);
 		
-
 		RequestDispatcher view = null;
-		if(0 != list.size()){
-			request.setAttribute("list", list);
-			view = request.getRequestDispatcher("views/mypage/myQnAList.jsp");
+		if(null != post){
+			request.setAttribute("post", post);
+			view = request.getRequestDispatcher("views/post/modifyPostForm.jsp");
 		}else{
 			System.out.println("error");
 		}

@@ -158,10 +158,10 @@
 						<li>
 							BOARD
 							<ul>
-								<li onclick="boardPage('자유게시판');">자유게시판</li>
+								<li onclick="boardPage('FRE');">자유게시판</li>
 								<li onclick="boardPage('SHO');">마이룸</li>
-								<li onclick="boardPage('오픈마켓');">오픈마켓</li>
-								<li onclick="boardPage('후기게시판');">후기게시판</li>
+								<li onclick="boardPage('MAR');">오픈마켓</li>
+								<li onclick="boardPage('REV');">후기게시판</li>
 							</ul>
 						</li>
 					</ul>

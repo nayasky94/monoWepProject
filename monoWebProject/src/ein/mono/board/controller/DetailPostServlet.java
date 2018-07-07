@@ -1,4 +1,4 @@
-package ein.mono.mypage.controller;
+package ein.mono.board.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,21 +10,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ein.mono.board.model.service.PostService;
+import ein.mono.board.model.service.ReplyService;
 import ein.mono.board.model.vo.PostVo;
-import ein.mono.mypage.model.service.MypageService;
-import ein.mono.qna.model.vo.QnAVo;
+import ein.mono.board.model.vo.ReplyVo;
 
 /**
- * Servlet implementation class MyQnAListServlet
+ * Servlet implementation class DetialGalleryServlet
  */
-@WebServlet("/myQnaList.do")
-public class MyQnAListServlet extends HttpServlet {
+@WebServlet("/detailPost.do")
+public class DetailPostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MyQnAListServlet() {
+    public DetailPostServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,15 +34,16 @@ public class MyQnAListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String mCode = request.getParameter("member_code");
+		String pCode = request.getParameter("pCode");
 		
-		ArrayList<PostVo> list = new MypageService().getQnaList("C_1");
+		PostVo result = new PostService().getPost(pCode);
+		ArrayList<ReplyVo> reply = new ReplyService().selectReplyList(pCode);
 		
-
 		RequestDispatcher view = null;
-		if(0 != list.size()){
-			request.setAttribute("list", list);
-			view = request.getRequestDispatcher("views/mypage/myQnAList.jsp");
+		if(null != result){
+			request.setAttribute("post", result);
+			request.setAttribute("reply", reply);
+			view = request.getRequestDispatcher("views/post/detailGalleryPost.jsp");
 		}else{
 			System.out.println("error");
 		}

@@ -31,7 +31,7 @@ public class ConstListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mCode = request.getParameter("member_code");
 		
-		HashMap<Integer, String> list = new MypageService().getConstList("P_2");
+		HashMap<Integer, String> list = new MypageService().getConstList("C_1");
 		
 		RequestDispatcher view = null;
 		if(null != list){

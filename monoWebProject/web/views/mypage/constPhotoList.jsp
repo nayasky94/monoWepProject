@@ -16,15 +16,21 @@
 		height:100px;
 	}
 	.outer {
-		width: 500px;
-		height: 500px;
-		margin-left: auto;
-		margin-right: auto;
-		padding: 20px;
+		width:1000px;
+		height:500px;
+		margin-left:auto;
+		margin-right:auto;
 	}
 	.imgFile{
-		width:150px;
-		height:100px;
+		width:200px;
+		height:200px;
+	}
+	.photoDiv{
+		cursor:pointer;
+		display:inline-block;
+	}
+	#fileBtnDiv{
+		text-align:center;	
 	}
 </style>
 
@@ -42,6 +48,8 @@
 			</div>
 			
 		<%} %>
+		<br><br><br><br>
+		<div id="fileBtnDiv">
 		<%if(8 > list.size()){ %>
 			<form action="/mono/photoInsert.do?" method="post" enctype="Multipart/form-data">
 				<input type="file" name="fileName">
@@ -50,7 +58,8 @@
 		<%}else{ %>
 			<h3>사진은 8개 까지만 가능합니다.</h3>
 		<%} %>
-			<button id="deleteBtn">사진 삭제</button>		
+		<button id="deleteBtn">사진 삭제</button>
+		</div>	
 		
 	</div>
 	<script>
@@ -63,7 +72,7 @@
 				}
 			});
 			var str = list.join(",");
-			location.href = "/mono/deletePhoto.do?chk="+str+"&mCode=P_2";
+			location.href = "/mono/deletePhoto.do?chk="+str+"&mCode=C_1";
 			
 		});
 	});

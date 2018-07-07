@@ -1,15 +1,32 @@
 package ein.mono.board.model.dao;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
 
 import ein.mono.board.model.vo.ReplyVo;
 import ein.mono.common.JDBCTemplate;
 
 public class ReplyDao {
+	Properties prop = new Properties();
+
+	public ReplyDao(){
+		String filename = ReplyDao.class.getResource("/relpy/reply_sql.properties").getPath();
+		try {
+			prop.load(new FileReader(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ArrayList<ReplyVo> selectReplyList(Connection con, String post_code) {
 		ArrayList<ReplyVo> list = null;
@@ -19,11 +36,7 @@ public class ReplyDao {
 		
 		try {
 			// post_code를 비교해서 해당 게시글의 댓글만 가져와야함
-			query = " SELECT REPLY_CODE, POST_CODE, REPLY_CONTENT, WRITER_CODE, REPLY_DATE, DELFLAG, MEMBER_NAME "
-				+" FROM REPLY "
-				+" JOIN MEMBER ON (WRITER_CODE = MEMBER_CODE) "
-                +" JOIN REPLY_REC_COUNT USING (REPLY_CODE) "
-				+" WHERE POST_CODE = ? ";  
+			query = prop.getProperty("selectReplyList");  
 
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, post_code);
@@ -33,16 +46,18 @@ public class ReplyDao {
 			list = new ArrayList<ReplyVo>();
 			ReplyVo temp = null;
 			while(rs.next()) {
+				String rCode = rs.getString("Reply_code");
+				String rContent = rs.getString("reply_content");
+				String mCode = rs.getString("member_code");
+				Date rDate = rs.getDate("reply_Date");
+				String nName = rs.getString("member_nname");
 				temp = new ReplyVo();
-				temp.setReply_code(rs.getString("Reply_code"));
-				temp.setPost_code(rs.getString(post_code));
-				temp.setReply_content(rs.getString("reply_code"));
-				temp.setWriter_code(rs.getString("writer_code"));
-				temp.setMember_name(rs.getString("member_name"));
-				
-				temp.setWriteDate(rs.getDate("cdate"));
-				String flag = rs.getString("delflag");
-				temp.setDelFlag(flag.equals("N") ? false : true);
+				temp.setReply_code(rCode);
+				temp.setPost_code(post_code);
+				temp.setWriter_code(mCode);
+				temp.setReply_content(rContent);
+				temp.setReply_date(rDate);
+				temp.setMember_nName(nName);
 				
 				
 				list.add(temp);
@@ -58,9 +73,27 @@ public class ReplyDao {
 	}
 
 	public int insertReply(Connection con, ReplyVo reply) {
-		// reply.getPost_code() 이용해서 해당 댓글이 달릴 게시글코드 가져옴
 		int result = 0;
-
+		PreparedStatement pstmt = null;
+		String query = "";
+		
+		String mCode =reply.getWriter_code();
+		String content = reply.getReply_content();
+		String pCode = reply.getPost_code();
+		
+		query = prop.getProperty("insertReply");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, mCode);
+			pstmt.setString(2, pCode);
+			pstmt.setString(3, content);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JDBCTemplate.close(pstmt);
+		}
 		return result;
 	}
 

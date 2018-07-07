@@ -66,7 +66,7 @@ public class PhotoInsertServlet extends HttpServlet {
 			out.println("</script>");
 			out.println("</html>");
 		}else{
-			int result = new MypageService().insertPhoto("P_2",newName,oldName);		
+			int result = new MypageService().insertPhoto("C_1",newName,oldName);		
 			if(0 < result){
 				response.sendRedirect("/mono/constList.do");
 			}else{

@@ -8,15 +8,15 @@ public class ReplyVo {
 	private String post_code;
 	private String reply_content;
 	private Date reply_date;
-	private String member_name;
+	private String member_nName;
 	
 	
-	public String getMember_name() {
-		return member_name;
+	public String getMember_nName() {
+		return member_nName;
 	}
 
-	public void setMember_name(String member_name) {
-		this.member_name = member_name;
+	public void setMember_nName(String member_nName) {
+		this.member_nName = member_nName;
 	}
 
 	public ReplyVo() {
@@ -73,7 +73,7 @@ public class ReplyVo {
 	@Override
 	public String toString() {
 		return "ReplyVo [reply_code=" + reply_code + ", writer_code=" + writer_code + ", post_code=" + post_code
-				+ ", reply_content=" + reply_content + ", reply_date=" + reply_date + ", member_name=" + member_name
+				+ ", reply_content=" + reply_content + ", reply_date=" + reply_date + ", member_nName=" + member_nName
 				+ "]";
 	}
 

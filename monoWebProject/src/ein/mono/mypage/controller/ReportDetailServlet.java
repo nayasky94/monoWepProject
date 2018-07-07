@@ -25,12 +25,12 @@ public class ReportDetailServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mCode = request.getParameter("mCode");
-		mCode = "M_1";
+		mCode = "B_1";
 		
 		ArrayList<RequestVo> result = new MypageService().getRequestList(mCode);
 		
 		RequestDispatcher view = null;
-		if(0 != result.size()){
+		if(0 <= result.size()){
 			request.setAttribute("list", result);
 			view = request.getRequestDispatcher("views/mypage/requestInterior.jsp");
 		}else{

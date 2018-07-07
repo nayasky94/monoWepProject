@@ -11,11 +11,11 @@ public class PostService {
 	public ArrayList<PostVo> selectPostList(String post_type){
 		Connection con = JDBCTemplate.getConnection();
 		
-		ArrayList<PostVo> boardList = new PostDao().selectPostList(con, post_type);
+		ArrayList<PostVo> list = new PostDao().selectPostList(con, post_type);
 		
 		JDBCTemplate.close(con);
 		
-		return boardList;
+		return list;
 	}
 
 	public PostVo selectPost(String post_code) {
@@ -38,25 +38,10 @@ public class PostService {
 		} else {
 			JDBCTemplate.rollback(con);
 		}
+		JDBCTemplate.close(con);
 		
 		return result;
 	}
-
-	public int deletePost(String post_code) {
-		Connection con = JDBCTemplate.getConnection();
-		
-		int result = new PostDao().deletePost(con, post_code);
-		
-		if(0 < result) {
-			JDBCTemplate.commit(con);
-		} else {
-			JDBCTemplate.rollback(con);
-		}
-		
-		return result;
-
-	}
-
 	public int updatePost(PostVo post) {
 		Connection con = JDBCTemplate.getConnection();
 		
@@ -70,23 +55,6 @@ public class PostService {
 		
 		return result;
 	}
-
-
-	public int selectPostTotalCount(String post_type) {
-		
-		//1. 커넥션 연결
-				Connection con = JDBCTemplate.getConnection();
-				//2. dao 메소드 호출
-				int listCount = new PostDao().selectPostTotalCount(con,post_type);
-				//3. 자원 반납(close)
-				JDBCTemplate.close(con);
-				//4. 해당 결과 리턴
-				return listCount;
-		
-		// TODO Auto-generated method stub
-		
-	}
-
 	public int selectPostTotalCount(String post_type, int condition, String keyword) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -101,4 +69,19 @@ public class PostService {
 		
 		return result;
 	}
+
+	public int removePost(String pCode) {
+		Connection con = JDBCTemplate.getConnection();
+		
+		int result = new PostDao().deletePost(con,pCode);
+		
+		if(0 < result){
+			JDBCTemplate.commit(con);
+		}else{
+			JDBCTemplate.rollback(con);
+		}
+		return result;
+	}
+
+	
 }
