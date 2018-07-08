@@ -52,9 +52,11 @@ public class MypageDao {
 			PostVo temp = null;
 			while(rs.next()){
 				String title = rs.getString("title");
+				String pCode = rs.getString("post_code");
 				int vCount = rs.getInt("views_count");
 				Date wDate = rs.getDate("written_date");
 				temp = new PostVo(title,vCount,wDate);
+				temp.setPost_code(pCode);
 				
 				result.add(temp);				
 			}

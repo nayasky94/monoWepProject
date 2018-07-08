@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import ein.mono.board.model.service.PostService;
 import ein.mono.board.model.service.ReplyService;
 import ein.mono.board.model.vo.PostVo;
+import ein.mono.board.model.vo.ReplyVo;
 import ein.mono.common.PageInfo;
 
 @WebServlet("/selectPostList.do")
@@ -67,11 +68,13 @@ public class SelectPostListServlet extends HttpServlet {
 		String url="";
 		
 		postList = new PostService().selectPostList(post_type);
+		
 		if(post_type.equals("SHO")) {
 			if(0 <= postList.size()){
 				url = "views/post/shoPostList.jsp";
 				request.setAttribute("list", postList);
-				request.setAttribute("pType", post_type);				
+				request.setAttribute("pType", post_type);	
+				
 			}else{
 				url = "views/post/errorPage.jsp";
 				request.setAttribute("list", postList);
@@ -88,7 +91,7 @@ public class SelectPostListServlet extends HttpServlet {
 			}
 		}else if(post_type.equals("REV")){
 			if(0 <= postList.size()){
-				url = "views/post/revPostList.jsp";
+				url = "views/post/afterList.jsp";
 				request.setAttribute("list", postList);
 				request.setAttribute("pType", post_type);
 				
@@ -98,7 +101,7 @@ public class SelectPostListServlet extends HttpServlet {
 			}
 		}else if(post_type.equals("MAR")){
 			if(0 <= postList.size()){
-				url = "views/post/marketPostList.jsp";
+				url = "views/post/marketList.jsp";
 				request.setAttribute("list", postList);
 				request.setAttribute("pType", post_type);
 				
@@ -106,6 +109,14 @@ public class SelectPostListServlet extends HttpServlet {
 				url = "views/post/errorPage.jsp";
 				request.setAttribute("list", postList);
 			}
+			
+		}else if(post_type.equals("REV")){
+			if(0 <= postList.size()){
+				url = "views/post/afterList.jsp";
+				request.setAttribute("list", postList);
+				request.setAttribute("pType", post_type);
+			}
+			
 		}else {
 			// 에러 페이지로 이동
 			url = "views/post/errorPage.jsp";
@@ -114,5 +125,5 @@ public class SelectPostListServlet extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 
-}
 
+}

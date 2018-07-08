@@ -50,7 +50,6 @@ public class InsertReplyServlet extends HttpServlet {
 		
 		
 		int result = new ReplyService().insertReply(reply);
-		System.out.println("결과"+result);
 		if(0 < result){
 			ArrayList<ReplyVo> list = new ReplyService().selectReplyList(pCode);
 			System.out.println("list : "+list.size());

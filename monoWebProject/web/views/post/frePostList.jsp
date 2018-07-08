@@ -85,7 +85,7 @@ table td{
 				<tr>
 					
 					<td><%=n.getNum()%></td>			
-					<td><a href="/mono/detailPost.do?pCode=<%=n.getPost_code()%>"><%=n.getTitle()%></td></a>				
+					<td><a href="/mono/detailPost.do?pCode=<%=n.getPost_code()%>"><%=n.getTitle()%></a></td>			
 					<td><%=n.getWriter_nickname()%></td>
 					<td><%=n.getViews_count()%></td>			
 					<td><%=n.getWritten_date() %></td>	

@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사진 게시판</title>
+<title></title>
 <script type="text/javascript" src="/mono/js/jquery-3.3.1.min.js"></script>
 <style>
 	.outer{
@@ -44,7 +44,7 @@
 <body>
 <%@ include file="../common/header.jsp" %>
 	<div class="outer">
-		<h1 align="center">마.이.룸</h1>
+		<h1 align="center"> 오픈마켓</h1>
 		<div class="thumnailArea">
 			<%for(int i = 0;i < list.size(); i++){ %>
 				<%PostVo av = list.get(i); %>

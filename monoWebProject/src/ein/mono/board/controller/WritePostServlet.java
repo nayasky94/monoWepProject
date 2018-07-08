@@ -38,7 +38,7 @@ public class WritePostServlet extends HttpServlet {
 		String mCode = request.getParameter("mCode");
 		String pType = request.getParameter("pType");
 		
-		System.out.println(content.length());
+		
 		if(5 > title.length() || 20 > content.length()){
 			String str = title.length() < 5 ? "글 제목" : "내용";
 			int num = title.length() < 5 ? 5 : 20;

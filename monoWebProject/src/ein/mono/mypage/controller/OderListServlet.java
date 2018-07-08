@@ -37,7 +37,7 @@ public class OderListServlet extends HttpServlet {
 		ArrayList<RequestVo> list = new MypageService().getOderList("C_1");
 		
 		RequestDispatcher view = null;
-		if(0 != list.size()){
+		if(0 <= list.size()){
 			request.setAttribute("list", list);
 			view = request.getRequestDispatcher("views/mypage/oderList.jsp");
 		}else{

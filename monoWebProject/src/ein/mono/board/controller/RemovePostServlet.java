@@ -36,6 +36,8 @@ public class RemovePostServlet extends HttpServlet {
 		
 		if(0 < result){
 			response.sendRedirect("/mono/selectPostList.do?posttype="+pType);
+		}else{
+			System.out.println("error");
 		}
 	}
 

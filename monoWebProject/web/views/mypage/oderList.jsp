@@ -36,7 +36,7 @@
 			<tr>
 				<th>no</th><th>작성일</th><th>견적명</th><th>평형</th><th>작성자</th>
 			</tr>
-			<%if (null != list) {%>
+			<%if (0 <= list.size()) {%>
 				<%for (int i = 0; i < list.size(); i++) {%>
 				<tr>
 					<td><%=i+1 %></td>

@@ -3,6 +3,7 @@ package ein.mono.board.model.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+
 import ein.mono.board.model.dao.PostDao;
 import ein.mono.board.model.vo.PostVo;
 import ein.mono.common.JDBCTemplate;
@@ -64,6 +65,15 @@ public class PostService {
 		Connection con = JDBCTemplate.getConnection();
 		
 		PostVo result = new PostDao().selectPost(con, pCode);
+		
+		if(null != result){
+			int up = new PostDao().updateVCount(con,pCode);
+			if(0 < up){
+				JDBCTemplate.commit(con);
+			}else{
+				JDBCTemplate.rollback(con);
+			}
+		}
 		
 		JDBCTemplate.close(con);
 		

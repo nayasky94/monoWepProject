@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -47,6 +46,7 @@ public class PostDao {
 				int num = rs.getInt("num");
 				String pCode = rs.getString("post_code");
 				String title = rs.getString("title");
+				int vCount = rs.getInt("VIEWS_COUNT");
 				String clobString = readClobData(rs.getCharacterStream("CONT"));
 				String nName = rs.getString("member_nname");
 				Date wDate = rs.getDate("written_Date");
@@ -55,6 +55,7 @@ public class PostDao {
 				temp.setNum(num);
 				temp.setPost_code(pCode);
 				temp.setTitle(title);
+				temp.setViews_count(vCount);
 				temp.setContent(clobString);
 				temp.setWriter_nickname(nName);
 				temp.setWritten_date(wDate);
@@ -90,7 +91,6 @@ public class PostDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
-		
 		query = prop.getProperty("selectPost");
 		try {
 			pstmt = con.prepareStatement(query);
@@ -160,6 +160,23 @@ public class PostDao {
 		String content = p.getContent();
 		
 		query = prop.getProperty("insertPost");
+		String sequence = "";
+		switch(pType){
+		case "SHO":
+			sequence = "'"+pType+"'||POST_SHOW_SEQ.NEXTVAL";
+			break;
+		case "FRE":
+			sequence = "'"+pType+"'||POST_FREE_SEQ.NEXTVAL";
+			break;
+		case "MAR":
+			sequence = "'"+pType+"'||POST_TRADE_SEQ.NEXTVAL";
+			break;
+		case "REV":
+			sequence = "'"+pType+"'||POST_REVIEW_SEQ.NEXTVAL";
+			break;
+		}
+		
+		query = query.replaceAll("SEQ", sequence);
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, pType);
@@ -232,9 +249,23 @@ public class PostDao {
 		
 		return result;
 	}
-	
 
-	
-	
+	public int updateVCount(Connection con, String pCode) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "";
+		query = prop.getProperty("updateVCount");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, pCode);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}	
 
 }
